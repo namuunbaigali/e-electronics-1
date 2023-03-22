@@ -1,12 +1,8 @@
-require("@babel/register")({
-  ignore: [/node_modules/],
-  extensions: [".js", ".json"],
-});
-
 import express, { json } from "express";
 import cors from "cors";
 import * as mongooseConfig from "./configs/mongoose-config";
 import usersRouter from "./routers/usersRouter";
+import userRolesRouter from "./routers/userRolesRouter";
 
 const PORT = 8080;
 const app = express();
@@ -19,6 +15,7 @@ app.get("/api/", (req, res) => {
 });
 
 app.use("/api/users/", usersRouter);
+app.use("/api/userRoles", userRolesRouter);
 
 app.listen(PORT, () => {
   console.log("http://localhost:" + PORT);
