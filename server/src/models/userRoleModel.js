@@ -10,3 +10,5 @@ export const UserRole = {
 export const userRoleSchema = new mongoose.Schema(UserRole, {
   timestamps: true,
 });
+
+export const userRoleModel = mongoose.model("UserRole", userRoleSchema);

@@ -1,12 +1,10 @@
 import express, { json } from "express";
 import cors from "cors";
-import * as mongooseConfig from "./configs/mongoose-config";
 import usersRouter from "./routers/usersRouter";
 import userRolesRouter from "./routers/userRolesRouter";
 import { loginUser, registerUser } from "./services/usersService";
 
-const PORT = 8080;
-const app = express();
+export const app = express();
 
 app.use(json());
 app.use(cors());
@@ -36,8 +34,4 @@ app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
   const response = await loginUser({ email, password });
   res.status(response.status).json(response);
-});
-
-app.listen(PORT, () => {
-  console.log("http://localhost:" + PORT);
 });

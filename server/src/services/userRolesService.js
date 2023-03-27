@@ -1,7 +1,4 @@
-import { userRoleSchema } from "../models/userRoleModel";
-import mongoose from "mongoose";
-
-const userRoleModel = mongoose.model("UserRole", userRoleSchema);
+import { userRoleModel } from "../models/userRoleModel";
 
 export const getUserRoles = async () => {
   const users = await userRoleModel.find({});
