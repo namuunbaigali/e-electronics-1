@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { createUser } from "../services";
+import { createUser } from "../services/usersService";
 
 export const registerUser = async ({ email, password }) => {
   password = await bcrypt.hash(password, 10);
