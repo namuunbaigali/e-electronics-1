@@ -8,15 +8,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && babel src --out-dir dist  --copy-files",
     "start:prod": "node dist/app.js",
-    "start": "nodemon --exec babel-node src/app.js"
+    "start": "nodemon --exec babel-node src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.35.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.2",

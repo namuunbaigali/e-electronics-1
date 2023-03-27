@@ -35,3 +35,4 @@ app.post("/api/login", async (req, res) => {
   const response = await loginUser({ email, password });
   res.status(response.status).json(response);
 });
+export default app;

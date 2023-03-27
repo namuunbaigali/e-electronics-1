@@ -14,8 +14,7 @@ usersRouter.get("/me", verifyToken, (req, res) => {
   return res.json(req.user);
 });
 
-usersRouter.get("/", verifyToken, async (req, res) => {
-  console.log("user is :", req.user);
+usersRouter.get("/", async (req, res) => {
   res.json(await getUsers());
 });
 
