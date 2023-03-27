@@ -5,6 +5,7 @@ const authRouter = Router();
 
 authRouter.post("/api/register", async (req, res) => {
   const { email, password, repassword } = req.body;
+
   if (password !== repassword) {
     return res
       .status(400)
@@ -12,12 +13,13 @@ authRouter.post("/api/register", async (req, res) => {
   }
   try {
     await registerUser({ email, password });
-    return res
-      .status(200)
-      .json({ success: true, message: "Register successful" });
   } catch (error) {
-    return res.status(500).render("error", { error });
+    console.log(error);
+    return res.status(500).json(error);
   }
+  return res
+    .status(200)
+    .json({ success: true, message: "Register successful" });
 });
 
 authRouter.post("/api/login", async (req, res) => {

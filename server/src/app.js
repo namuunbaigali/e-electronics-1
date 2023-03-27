@@ -9,7 +9,7 @@ app.use(json());
 app.use(cors());
 
 app.use(authRouter);
-app.use("/api/users/", usersRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/userRoles", userRolesRouter);
 
 export default app;
