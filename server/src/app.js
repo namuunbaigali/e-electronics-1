@@ -7,7 +7,6 @@ import authRouter from "./routers/authRoter";
 export const app = express();
 app.use(json());
 app.use(cors());
-app.use(errorHandler);
 
 app.use(authRouter);
 app.use("/api/users/", usersRouter);
