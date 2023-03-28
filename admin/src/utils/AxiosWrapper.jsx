@@ -7,10 +7,6 @@ export const AxiosWrapper = ({ children }) => {
   const token = localStorage.getItem("token") || "";
 
   axios.defaults.baseURL = process.env.REACT_APP_CALLBACK_URL || "";
-  console.log(
-    "process.env.REACT_APP_CALLBACK_URL:",
-    process.env.REACT_APP_CALLBACK_URL
-  );
 
   axios.interceptors.request.use(
     (config) => {
@@ -24,11 +20,9 @@ export const AxiosWrapper = ({ children }) => {
   );
 
   axios.interceptors.response.use(
-    (response) => {
-      return response;
-    },
+    (response) => response,
     (error) => {
-      const { status } = error;
+      const { status } = error.response;
       switch (status) {
         case 401:
           toast.error("Нэвтрээгүй байна!");
