@@ -7,6 +7,10 @@
   animation: mymove 2.5s infinite;
 }
 
+.leaflet-container {
+  height: 100%;
+}
+
 @keyframes mymove {
   33% {
     top: 0px;
