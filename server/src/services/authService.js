@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createUser } from "../services/usersService";
 import { userModel } from "../models/userModel";
+import { env } from "../configs/env";
 
 export const registerUser = async ({ email, password }) => {
   password = await bcrypt.hash(password, 10);
@@ -21,13 +22,9 @@ export const loginUser = async ({ email, password }) => {
   if (!passwordMatch) {
     return { success: false, status: 400, message: "Password not matching" };
   }
-  const token = jwt.sign(
-    { _id: user._id, email: user.email },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "2h",
-    }
-  );
+  const token = jwt.sign({ _id: user._id, email: user.email }, JWT_SECRET, {
+    expiresIn: "2h",
+  });
 
   return {
     success: true,
