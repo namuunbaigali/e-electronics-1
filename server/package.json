@@ -6,7 +6,7 @@
   "scripts": {
     "env": "touch .env",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx rimraf dist && babel src --out-dir dist  --copy-files",
+    "build": "npx rimraf dist && npx babel src --out-dir dist  --copy-files",
     "start:prod": "node dist/server.js",
     "start": "nodemon --exec babel-node src/server.js"
   },
