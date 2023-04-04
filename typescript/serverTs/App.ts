@@ -15,6 +15,7 @@ app.get("/", (req:Request, res:Response) => {
 
 
 app.use("/api/users",usersRouter)
+app.use("/api/movies", )
 
 export default app
 
