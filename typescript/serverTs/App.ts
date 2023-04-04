@@ -1,4 +1,5 @@
 import express ,{Express,Request,Response} from "express";
+import moviesRouter from "./routes/movieRouter";
 import usersRouter from "./routes/userRouter";
 
 
@@ -15,7 +16,7 @@ app.get("/", (req:Request, res:Response) => {
 
 
 app.use("/api/users",usersRouter)
-app.use("/api/movies", )
+app.use("/api/movies",moviesRouter )
 
 export default app
 

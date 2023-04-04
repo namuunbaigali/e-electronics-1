@@ -41,10 +41,10 @@ export interface IMovie extends Document<Types.ObjectId>{
 }
 
 
-const UserSchema=new Schema<IMovie>({
+const MovieSchema=new Schema<IMovie>({
     
 })
 
-const MovieModel=mongoose.model<IMovie>("User",UserSchema)
+const MovieModel=mongoose.model<IMovie>("Movie",MovieSchema)
 
 export default MovieModel
