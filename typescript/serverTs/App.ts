@@ -1,9 +1,11 @@
 import express ,{Express,Request,Response} from "express";
 import moviesRouter from "./routes/movieRouter";
 import usersRouter from "./routes/userRouter";
+import cors from "cors";
 
 
 const app:Express = express();
+app.use(cors());
 app.use(express.json())
 
 
