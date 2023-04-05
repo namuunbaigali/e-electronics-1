@@ -6,16 +6,39 @@ import movieModel,{ IMovie } from "../models/movieModel";
 // };
 
 export const findAllMovies= async (req:Request,res: Response)=>{
-    const {limit="10",skip='0'}=req.query
-    const result:IMovie[] = await movieModel.find({}).limit(Number(limit)).skip(Number(skip));
-    res.json(result)
+    const {limit="10",skip='0',ordering='releasedDesc'}=req.query
+    let sort=''
+    switch(ordering){
+        case "releasedDesc":sort="-released"; 
+        break;
+        case "imdbRatingDesc":sort="-awards.wins"
+        break
+        case'titleAsc':sort="title"
+        break 
+        case'titleDesc':sort="-title"
+        break
+        default:sort='released'
+        break
+    }
+    const result:IMovie[] = await movieModel.find({}).sort(sort).limit(Number(limit)).skip(Number(skip));
+   try {
+     res.json(result)
+   } catch (error) {
+    console.log(error);
+    
+   }
 };
 
-export const findUserById= async (req:Request,res: Response)=>{
+export const findMoviesById= async (req:Request,res: Response)=>{
 const {_id}=req.params;
 
     const result:IMovie|null = await movieModel.findById(_id);
-    res.json(result)
+  try {
+     res.json(result)
+   } catch (error) {
+    console.log(error);
+    
+   }
 }
 
 export const createMovies = async (req: Request, res: Response) => {
