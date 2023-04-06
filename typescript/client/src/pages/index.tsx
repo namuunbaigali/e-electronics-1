@@ -4,18 +4,20 @@ import Head from "next/head";
 
 import { useEffect, useState } from "react";
 
-
 export default function Home(): JSX.Element {
   const [movies, setMovies] = useState<IMovie[]>([]);
-  const [ordering,setOrdering]=useState<string>("")
+  const [ordering, setOrdering] = useState<string>("");
+  const [q, setQ] = useState<string>("");
 
   useEffect(() => {
-    fetch(`http://localhost:7070/api/movies?limit=12&ordering=${ordering}`)
+    fetch(
+      `http://localhost:7070/api/movies?limit=12&ordering=${ordering}&q=${q}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setMovies(data);
       });
-  }, [ordering]);
+  }, [ordering, q]);
 
   return (
     <>
@@ -25,26 +27,67 @@ export default function Home(): JSX.Element {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-     <div className="bg-slate-100 min-h-screen">
-        <div className="container mx-auto">
-          <div className="bg-white">
-            <select
-              value={ordering}
+      <div className=" container mx-auto">
+        <form>
+          <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
+            Search
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                aria-hidden="true"
+                className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                >
+                  hh
+                </path>
+              </svg>
+            </div>
+            <input
+              value={q}
               onChange={(e): void => {
-                setOrdering(e.target.value);
+                setQ(e.target.value);
               }}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="releasedAsc">Oldest</option>
-              <option value="releasedDesc">Newest</option>
-              <option value="imdbRatingDesc">Most popular</option>
-              <option value="titleAsc">A-Z</option>
-              <option value="titleDesc">Z-A</option>
-            </select>
-            <div className="p-4 grid grid-cols-6 gap-4">
-              {movies.map((movie) => (
-                <MovieCard movie={movie} key={movie._id} />
-              ))}
+              type="search"
+              id="default-search"
+              className="block w-full p-3 my-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search movies, Tv, actors,more"
+              required
+            />
+          </div>
+        </form>
+
+        <div className="bg-slate-100 min-h-screen">
+          <div>
+            <div className="bg-white">
+              <select
+                value={ordering}
+                onChange={(e): void => {
+                  setOrdering(e.target.value);
+                }}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="releasedAsc">Sort</option>
+                <option value="releasedAsc">Oldest</option>
+                <option value="releasedDesc">Newest</option>
+                <option value="imdbRatingDesc">Most popular</option>
+                <option value="titleAsc">A-Z</option>
+                <option value="titleDesc">Z-A</option>
+              </select>
+              <div className="p-4 grid grid-cols-6 gap-4">
+                {movies.map((movie) => (
+                  <MovieCard movie={movie} key={movie._id} />
+                ))}
+              </div>
             </div>
           </div>
         </div>

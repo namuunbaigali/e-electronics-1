@@ -6,7 +6,7 @@ import movieModel,{ IMovie } from "../models/movieModel";
 // };
 
 export const findAllMovies= async (req:Request,res: Response)=>{
-    const {limit="10",skip='0',ordering='releasedDesc'}=req.query
+    const {limit="10",skip='0',ordering='releasedDesc',q=''}=req.query
     let sort=''
     switch(ordering){
         case "releasedDesc":sort="-released"; 
@@ -20,7 +20,7 @@ export const findAllMovies= async (req:Request,res: Response)=>{
         default:sort='released'
         break
     }
-    const result:IMovie[] = await movieModel.find({}).sort(sort).limit(Number(limit)).skip(Number(skip));
+    const result:IMovie[] = await movieModel.find({"title":{$regex: new RegExp(`${q}`)}}).sort(sort).limit(Number(limit)).skip(Number(skip));
    try {
      res.json(result)
    } catch (error) {
