@@ -1,12 +1,17 @@
 import { Request,Response } from "express";
-import movieModel,{ IMovie } from "../models/movieModel";
+import MovieModel,{ IMovie } from "../models/movieModel";
 
 // export const countAllUsers = async (req: Request, res: Response) => {
 //   res.json(await movieModel.count({}));
 // };
+export const findAllMovieIds = async (req: Request, res: Response) => {
+  const result = await MovieModel.find().select({ _id: 1 });
+  res.json(result.map((movieId) => movieId._id));
+};
+
 
 export const findAllMovies= async (req:Request,res: Response)=>{
-    const {limit="10",skip='0',ordering='releasedDesc',q=''}=req.query
+    const {limit="12",skip='0',ordering='releasedDesc',q=''}=req.query
     let sort=''
     switch(ordering){
         case "releasedDesc":sort="-released"; 
@@ -20,7 +25,7 @@ export const findAllMovies= async (req:Request,res: Response)=>{
         default:sort='released'
         break
     }
-    const result:IMovie[] = await movieModel.find({"title":{$regex: new RegExp(`${q}`)}}).sort(sort).limit(Number(limit)).skip(Number(skip));
+    const result:IMovie[] = await MovieModel.find({"title":{$regex: new RegExp(`${q}`)}}).sort(sort).limit(Number(limit)).skip(Number(skip));
    try {
      res.json(result)
    } catch (error) {
@@ -32,7 +37,7 @@ export const findAllMovies= async (req:Request,res: Response)=>{
 export const findMoviesById= async (req:Request,res: Response)=>{
 const {_id}=req.params;
 
-    const result:IMovie|null = await movieModel.findById(_id);
+    const result:IMovie|null = await MovieModel.findById(_id);
   try {
      res.json(result)
    } catch (error) {
@@ -42,18 +47,18 @@ const {_id}=req.params;
 }
 
 export const createMovies = async (req: Request, res: Response) => {
-  const newUser = await movieModel.create(req.body);
+  const newUser = await MovieModel.create(req.body);
   res.json(newUser);
 };
 
 export const deleteMovies= async (req:Request,res: Response)=>{
     const {_id}=req.params
-    const deleteUser = await movieModel.findByIdAndDelete(_id);
+    const deleteUser = await MovieModel.findByIdAndDelete(_id);
     res.json(deleteUser)
 }
 
 export const updateMovies= async (req:Request,res: Response)=>{
     const {_id}=req.params
-    const updateUser = await movieModel.findByIdAndUpdate(_id);
+    const updateUser = await MovieModel.findByIdAndUpdate(_id);
     res.json(updateUser)
 }

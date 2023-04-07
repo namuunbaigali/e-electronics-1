@@ -4,15 +4,21 @@ import Head from "next/head";
 
 import { useEffect, useState } from "react";
 
-export default function Home(): JSX.Element {
-  const [movies, setMovies] = useState<IMovie[]>([]);
+export async function getStaticProps() {
+  const response = await fetch(`http://localhost:7070/api/movies?limit=12`);
+  const data = await response.json();
+  return {
+    props: { data },
+  };
+}
+
+export default function Home({ data }: { data: IMovie[] }): JSX.Element {
+  const [movies, setMovies] = useState<IMovie[]>(data);
   const [ordering, setOrdering] = useState<string>("");
   const [q, setQ] = useState<string>("");
 
   useEffect(() => {
-    fetch(
-      `http://localhost:7070/api/movies?limit=12&ordering=${ordering}&q=${q}`
-    )
+    fetch(`http://localhost:7070/api/movies?limit=12&ordering=${ordering}`)
       .then((res) => res.json())
       .then((data) => {
         setMovies(data);

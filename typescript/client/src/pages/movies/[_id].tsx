@@ -1,21 +1,48 @@
 import { IMovie } from "@/interface/movie";
+import { GetStaticPropsContext } from "next";
 // import Image from "next/image";
-import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+// import { useRouter } from "next/router";
+import { FC, useState } from "react";
 
-const Index: FC = () => {
-  const [movie, setMovie] = useState<IMovie | undefined>();
-  const { query } = useRouter();
+export const getStaticPaths = async () => {
+  const response = await fetch("http://localhost:7070/api/movies/ids");
+  const data = await response.json();
+  const paths = data.map((_id: string) => ({
+    params: {
+      _id,
+    },
+  }));
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};
 
-  useEffect(() => {
-    if (query._id) {
-      fetch("http://localhost:7070/api/movies/" + query._id)
-        .then((res) => res.json())
-        .then((data) => {
-          setMovie(data);
-        });
-    }
-  }, [query._id]);
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+  const response = await fetch(
+    `http://localhost:7070/api/movies/${params?._id}`
+  );
+  const data = await response.json();
+  return { props: { data } };
+};
+
+interface Props {
+  data: IMovie;
+}
+
+const Index: FC<Props> = ({ data }) => {
+  const [movie, setMovie] = useState<IMovie | undefined>(data);
+  // const { query } = useRouter();
+
+  // useEffect(() => {
+  //   if (query._id) {
+  //     fetch("http://localhost:7070/api/movies/" + query._id)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setMovie(data);
+  //       });
+  //   }
+  // }, [query._id]);
 
   if (!movie) return <h1>Movie not found</h1>;
 
