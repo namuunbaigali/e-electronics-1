@@ -1,11 +1,9 @@
 import { IMovie } from "@/interface/movie";
 import { GetStaticPropsContext } from "next";
-// import Image from "next/image";
-// import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 export const getStaticPaths = async () => {
-  const response = await fetch("http://localhost:7070/api/movies/ids");
+  const response = await fetch("http://localhost:5003/api/movies/ids");
   const data = await response.json();
   const paths = data.map((_id: string) => ({
     params: {
@@ -20,7 +18,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const response = await fetch(
-    `http://localhost:7070/api/movies/${params?._id}`
+    `http://localhost:5003/api/movies/${params?._id}`
   );
   const data = await response.json();
   return { props: { data } };
@@ -31,7 +29,7 @@ interface Props {
 }
 
 const Index: FC<Props> = ({ data }) => {
-  const [movie, setMovie] = useState<IMovie | undefined>(data);
+  const movie = data;
   // const { query } = useRouter();
 
   // useEffect(() => {
@@ -44,7 +42,7 @@ const Index: FC<Props> = ({ data }) => {
   //   }
   // }, [query._id]);
 
-  if (!movie) return <h1>Movie not found</h1>;
+  // if (!movie) return <h1>Movie not found</h1>;
 
   return (
     <>
@@ -93,10 +91,10 @@ const Index: FC<Props> = ({ data }) => {
         <section className="font-bold">
           <h1>{` Rating: PG(${movie.imdb.rating})`}</h1>
 
-          <h1>{` Language: ${movie.languages}`}</h1>
+          {/* <h1>{` Language: ${movie.languages}`}</h1> */}
           <h1>{` Director: ${movie.directors}`}</h1>
           <h1>{` Producer: ${movie.cast}`}</h1>
-          <h1>{` Writer: ${movie.writers}`}</h1>
+          {/* <h1>{` Writer: ${movie.writers}`}</h1> */}
           <h1>{` Runtime: ${movie.runtime}`}</h1>
         </section>
       </div>
