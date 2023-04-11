@@ -11,13 +11,14 @@ import { MovieCardSkelton } from "@/components/movie/MovieCardSkeleton";
 import { nanoid } from "nanoid";
 import { Select } from "@/components/ui/Select";
 import { useRouter } from "next/router";
+import Navbar from "@/components/navbars/Navbar";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { query } = context;
 
   const { ordering = "", limit = 24 } = query;
   const response = await axios.get(
-    `http://localhost:5003/api/movies?limit=${limit}&ordering=${ordering}`
+    `http://localhost:7070/api/movies?limit=${limit}&ordering=${ordering}`
   );
   const { data } = response;
   return {
@@ -37,7 +38,7 @@ export default function Home({ data }: { data: IMovie[] }): JSX.Element {
   const { addQuery } = useQuery();
 
   useEffect(() => {
-    fetch(`http://localhost:5003/api/movies?limit=12&ordering=${ordering}`)
+    fetch(`http://localhost:7070/api/movies?limit=12&ordering=${ordering}`)
       .then((res) => res.json())
       .then((data) => {
         setMovies(data);
@@ -52,93 +53,96 @@ export default function Home({ data }: { data: IMovie[] }): JSX.Element {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className=" container mx-auto">
-        <form>
-          <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-            Search
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg
-                aria-hidden="true"
-                className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      <main>
+        <Navbar />
+        <div className=" container mx-auto">
+          <form>
+            <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
+              Search
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  aria-hidden="true"
+                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  hh
-                </path>
-              </svg>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  >
+                    hh
+                  </path>
+                </svg>
+              </div>
+              <input
+                value={q}
+                onChange={(e): void => {
+                  setQ(e.target.value);
+                }}
+                type="search"
+                // id="default-search"
+                className="block w-full p-3 my-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search movies, Tv, actors,more"
+                required
+              />
             </div>
-            <input
-              value={q}
-              onChange={(e): void => {
-                setQ(e.target.value);
-              }}
-              type="search"
-              id="default-search"
-              className="block w-full p-3 my-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search movies, Tv, actors,more"
-              required
-            />
-          </div>
-        </form>
+          </form>
 
-        <div className="bg-slate-100 min-h-screen">
-          <div>
-            <div className="bg-white">
-              <Select
-                items={[
-                  { value: "", label: "Sort..." },
-                  { value: "releasedAsc", label: "Oldest" },
-                  { value: "releasedDesc", label: "Newest" },
-                  { value: "imdbRatingDesc", label: "Most popular" },
-                  { value: "titleAsc", label: "A-Z" },
-                  { value: "titleDesc", label: "Z-A" },
-                ]}
-                onChange={(e) => {
-                  addQuery({ ordering: e.target.value });
-                }}
-                value={ordering + ""}
-                itemValue={"value"}
-                itemLabel={"label"}
-              />
+          <div className="bg-slate-100 min-h-screen">
+            <div>
+              <div className="bg-white">
+                <Select
+                  items={[
+                    { value: "", label: "Sort..." },
+                    { value: "releasedAsc", label: "Oldest" },
+                    { value: "releasedDesc", label: "Newest" },
+                    { value: "imdbRatingDesc", label: "Most popular" },
+                    { value: "titleAsc", label: "A-Z" },
+                    { value: "titleDesc", label: "Z-A" },
+                  ]}
+                  onChange={(e) => {
+                    addQuery({ ordering: e.target.value });
+                  }}
+                  value={ordering + ""}
+                  itemValue={"value"}
+                  itemLabel={"label"}
+                />
 
-              <Select
-                items={[
-                  { value: "6", label: "6" },
-                  { value: "12", label: "12" },
-                  { value: "24", label: "24" },
-                  { value: "48", label: "48" },
-                ]}
-                onChange={(e) => {
-                  addQuery({ limit: e.target.value });
-                }}
-                value={limit + ""}
-                itemValue={"value"}
-                itemLabel={"label"}
-              />
+                <Select
+                  items={[
+                    { value: "6", label: "6" },
+                    { value: "12", label: "12" },
+                    { value: "24", label: "24" },
+                    { value: "48", label: "48" },
+                  ]}
+                  onChange={(e) => {
+                    addQuery({ limit: e.target.value });
+                  }}
+                  value={limit + ""}
+                  itemValue={"value"}
+                  itemLabel={"label"}
+                />
 
-              <div className="p-4 grid gap-4 md:grid-cols-6 sm:grid-cols-4 grid-cols-2">
-                {!loading
-                  ? movies.map((movie) => (
-                      <MovieCard movie={movie} key={movie._id} />
-                    ))
-                  : Array.from(Array(limit), () => (
-                      <MovieCardSkelton key={nanoid()} />
-                    ))}
+                <div className="p-4 grid gap-4 md:grid-cols-6 sm:grid-cols-4 grid-cols-2">
+                  {!loading
+                    ? movies.map((movie) => (
+                        <MovieCard movie={movie} key={movie._id} />
+                      ))
+                    : Array.from(Array(limit), () => (
+                        <MovieCardSkelton key={nanoid()} />
+                      ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

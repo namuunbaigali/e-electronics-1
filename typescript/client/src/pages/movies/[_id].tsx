@@ -1,9 +1,10 @@
 import { IMovie } from "@/interface/movie";
 import { GetStaticPropsContext } from "next";
 import { FC } from "react";
+import Image from "next/image";
 
 export const getStaticPaths = async () => {
-  const response = await fetch("http://localhost:5003/api/movies/ids");
+  const response = await fetch("http://localhost:7070/api/movies/ids");
   const data = await response.json();
   const paths = data.map((_id: string) => ({
     params: {
@@ -18,7 +19,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const response = await fetch(
-    `http://localhost:5003/api/movies/${params?._id}`
+    `http://localhost:7070/api/movies/${params?._id}`
   );
   const data = await response.json();
   return { props: { data } };
@@ -47,13 +48,16 @@ const Index: FC<Props> = ({ data }) => {
   return (
     <>
       <div className="container m-auto">
-        <img
+        <Image
           src={movie.poster}
           className="w-screen py-3 w-full aspect-[100/75] h-full object-cover rounded"
         />
 
         <div className="grid grid-cols-3 gap-4  h-8 ">
-          <img src={movie.poster} className="col-span-1 h-64 w-full rounded " />
+          <Image
+            src={movie.poster}
+            className="col-span-1 h-64 w-full rounded "
+          />
 
           <div className="col-span-2 border text-center bg-slate-200 rounded p-10 h-64 ">
             <h1 className="text-3xl font-bold py-2">{movie.title}</h1>
@@ -65,7 +69,7 @@ const Index: FC<Props> = ({ data }) => {
             </div>
             <div className="grid grid-cols-2">
               <div className="w-24  m-auto flex grid grid-cols-2">
-                <img
+                <Image
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Rotten_Tomatoes_rotten.svg/290px-Rotten_Tomatoes_rotten.svg.png?20200101020019"
                   className="grid grid-cols-2"
                 />
@@ -73,7 +77,7 @@ const Index: FC<Props> = ({ data }) => {
                 <h1>TOMATOMETER</h1>
               </div>
               <div className="w-24  m-auto flex grid grid-cols-2">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJBW18NwiOZRtRbQP4gg2lPGpAVil5Xommzw&usqp=CAU" />
+                <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJBW18NwiOZRtRbQP4gg2lPGpAVil5Xommzw&usqp=CAU" />
                 <p className="text-3xl">{movie.imdb.rating}</p>
                 <h1>AUDIENCE SCORE</h1>
               </div>
