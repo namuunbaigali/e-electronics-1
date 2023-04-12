@@ -21,7 +21,7 @@ function classNames(...classes) {
 
 export default function Example() {
   return (
-    <Disclosure as="nav" className="bg-[#303030]">
+    <Disclosure as="nav" className="bg-[#A9907E]">
       {() => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -60,7 +60,7 @@ export default function Example() {
                         className={classNames(
                           item.current
                             ? " text-white"
-                            : "text-white hover:text-[#337ab7]",
+                            : "text-[#F3DEBA] hover:text-[#F3DEBA]",
                           " px-3 py-2"
                         )}
                         aria-current={item.current ? "page" : undefined}
@@ -187,6 +187,12 @@ export default function Example() {
           </Disclosure.Panel>
         </>
       )}
+
+      <h1 className="w-full  h-40 bg-[#181D31]">
+        <p className="text-[#f9f9f9] text-6xl text-center my-auto">
+          Halgai shig ygaan sarnai
+        </p>
+      </h1>
     </Disclosure>
   );
 }
